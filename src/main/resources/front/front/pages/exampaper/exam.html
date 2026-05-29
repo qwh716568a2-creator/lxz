@@ -1,0 +1,381 @@
+﻿<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>问卷调查</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../elementui/elementui.css"/>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background: #f6f8fa;
+        }
+
+        .container {
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding: 18px;
+            color: #333;
+        }
+
+        .tip-text {
+            font-size: 22px;
+            color: #f96332;
+            font-weight: 600;
+        }
+
+        .top-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 18px;
+            font-size: 17px;
+            background: #409eff;
+            color: #ffffff;
+            border-radius: 12px;
+        }
+
+        .detail-content {
+            margin-top: 16px;
+            padding: 18px;
+            background: #fff;
+            border: 1px solid #eeeeee;
+            border-radius: 8px;
+        }
+
+        .question-card {
+            padding: 18px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .question-card:last-child {
+            border-bottom: 0;
+        }
+
+        .question-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .question-index {
+            min-width: 34px;
+            height: 34px;
+            line-height: 34px;
+            text-align: center;
+            border-radius: 50%;
+            background: #ecf5ff;
+            color: #409eff;
+            font-weight: 600;
+        }
+
+        .question-type {
+            color: #999;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .question-control {
+            padding-left: 44px;
+        }
+
+        .question-control .el-input {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 780px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            min-height: 42px;
+            padding: 8px 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .option-item:hover {
+            border-color: #409eff;
+            background: #f4f9ff;
+        }
+
+        .option-item .el-radio,
+        .option-item .el-checkbox {
+            width: 100%;
+            margin-right: 0;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
+        .option-item .el-radio__label,
+        .option-item .el-checkbox__label {
+            font-size: 15px;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .pager-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 20px;
+            color: #666;
+        }
+
+        .empty-tip {
+            padding: 32px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="top-content">
+        <div class="left-content">
+            已显示
+            <span class="tip-text">{{ shownCount }}</span>
+            道，未显示
+            <span class="tip-text">{{ unshownCount }}</span>
+            道，总题目
+            <span class="tip-text">{{ dataList.length }}</span>
+            道。
+        </div>
+        <div class="right-content">
+            <el-button v-if="!isEndFlag" type="danger" round @click="leaveTap">结束问卷调查</el-button>
+        </div>
+    </div>
+
+    <div class="detail-content" v-if="!isEndFlag">
+        <div v-if="pagedQuestions.length === 0" class="empty-tip">暂无题目</div>
+
+        <div class="question-card" v-for="(question,index) in pagedQuestions" :key="question.id">
+            <div class="question-title">
+                <span class="question-index">{{ pageStartIndex + index + 1 }}</span>
+                <div>
+                    <strong>{{ question.examquestionName }}</strong>
+                    <span class="question-type">({{ question.examquestionValue }})</span>
+                </div>
+            </div>
+
+            <div class="question-control" v-if="question.examquestionTypes == 1 || question.examquestionTypes == 3">
+                <el-radio-group v-model="answers[question.id]" class="option-group">
+                    <div
+                        class="option-item"
+                        v-for="(item, optionIndex) in question.options"
+                        :key="optionIndex">
+                        <el-radio :label="item.code">{{ item.text }}</el-radio>
+                    </div>
+                </el-radio-group>
+            </div>
+
+            <div class="question-control" v-if="question.examquestionTypes == 2">
+                <el-checkbox-group v-model="answers[question.id]" class="option-group">
+                    <div
+                        class="option-item"
+                        v-for="(item, optionIndex) in question.options"
+                        :key="optionIndex">
+                        <el-checkbox :label="item.code">{{ item.text }}</el-checkbox>
+                    </div>
+                </el-checkbox-group>
+            </div>
+
+            <div class="question-control" v-if="question.examquestionTypes == 4">
+                <el-input v-model="answers[question.id]" placeholder="请填写答案" clearable></el-input>
+            </div>
+        </div>
+
+        <div class="pager-actions" v-if="dataList.length > 0">
+            <el-button :disabled="currentPage === 1" @click="prevPage">上一页</el-button>
+            <span>第 {{ currentPage }} / {{ totalPages }} 页</span>
+            <el-button v-if="!isLastPage" type="primary" @click="nextPage">下一页</el-button>
+            <el-button v-if="isLastPage" type="success" @click="submitAll">提交问卷</el-button>
+        </div>
+    </div>
+
+    <div class="detail-content" v-if="isEndFlag">
+        <div class="question-card">
+            <span>{{ paper.exampaperJieshuyu || '问卷调查已结束，感谢您的参与。' }}</span>
+        </div>
+        <div class="pager-actions">
+            <el-button @click="finishTap" type="primary">结束问卷调查</el-button>
+        </div>
+    </div>
+</div>
+
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../elementui/elementui.js"></script>
+<script src="../../js/config.js"></script>
+<script src="../../modules/config.js"></script>
+<script src="../../js/utils.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data() {
+            return {
+                dataList: [],
+                paper: {},
+                currentPage: 1,
+                pageSize: 5,
+                answers: {},
+                user: {},
+                isAnonymous: false,
+                examrecordId: null,
+                paperUUID: null,
+                isEndFlag: false
+            };
+        },
+        computed: {
+            totalPages: function () {
+                return Math.max(1, Math.ceil(this.dataList.length / this.pageSize));
+            },
+            pageStartIndex: function () {
+                return (this.currentPage - 1) * this.pageSize;
+            },
+            pagedQuestions: function () {
+                return this.dataList.slice(this.pageStartIndex, this.pageStartIndex + this.pageSize);
+            },
+            shownCount: function () {
+                return Math.min(this.currentPage * this.pageSize, this.dataList.length);
+            },
+            unshownCount: function () {
+                return Math.max(this.dataList.length - this.shownCount, 0);
+            },
+            isLastPage: function () {
+                return this.currentPage >= this.totalPages;
+            }
+        },
+        methods: {
+            init() {
+                let _this = this;
+                let id = layui.http.getParam("id");
+                this.isAnonymous = layui.http.getParam("anonymous") === "1";
+                this.examrecordId = layui.http.getParam("examrecordId");
+                this.paperUUID = layui.http.getParam("paperUUID");
+                if (this.isAnonymous) {
+                    layui.http.request(`examrecord/savePublicExamrecord?exampaperId=` + id, 'post', {}, function (res) {
+                        _this.examrecordId = res.id;
+                        _this.paperUUID = res.uuid;
+                    });
+                } else {
+                    let table = localStorage.getItem("userTable");
+                    layui.http.request(`${table}/session`, 'get', {}, function (data) {
+                        _this.user = data.data;
+                    });
+                }
+
+                var params = {
+                    page: 1,
+                    limit: 999,
+                    orderBy: "examquestion_sequence",
+                    exampaperId: id
+                };
+                layui.http.request(this.isAnonymous ? `examquestion/list` : `examquestion/page`, 'get', params, function (data) {
+                    _this.dataList = (data.data.list || []).map(function (question) {
+                        if (question.examquestionTypes != 4) {
+                            try {
+                                question.options = JSON.parse(question.examquestionOptions || "[]");
+                            } catch (e) {
+                                question.options = [];
+                            }
+                        } else {
+                            question.options = [];
+                        }
+                        _this.$set(_this.answers, question.id, question.examquestionTypes == 2 ? [] : "");
+                        return question;
+                    });
+                });
+
+                layui.http.request(this.isAnonymous ? `exampaper/detail/${id}` : `exampaper/info/${id}`, 'get', {}, function (data) {
+                    _this.paper = data.data;
+                });
+            },
+            leaveTap() {
+                this.$confirm(`确定离开问卷调查`, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.saveCurrentPage();
+                    this.isEndFlag = true;
+
+                    var params = {
+                        exampaperId: layui.http.getParam("id"),
+                        examredetailsUuidNumber: this.paperUUID || layui.http.getParam("paperUUID")
+                    };
+                    layui.http.request((this.isAnonymous ? `examredetails/addPublicUnsaved` : `examredetails/addUnsaved`), 'get', params, function () {
+                    });
+                });
+            },
+            finishTap() {
+                window.history.back();
+            },
+            prevPage() {
+                if (this.currentPage > 1) {
+                    this.saveCurrentPage();
+                    this.currentPage = this.currentPage - 1;
+                }
+            },
+            nextPage() {
+                this.saveCurrentPage();
+                if (!this.isLastPage) {
+                    this.currentPage = this.currentPage + 1;
+                }
+            },
+            submitAll() {
+                this.saveCurrentPage();
+                this.isEndFlag = true;
+            },
+            saveCurrentPage() {
+                let _this = this;
+                this.pagedQuestions.forEach(function (question) {
+                    if (!_this.paperUUID && !layui.http.getParam("paperUUID")) {
+                        return;
+                    }
+                    let answer = _this.answers[question.id];
+                    if (question.examquestionTypes == 2 && Array.isArray(answer)) {
+                        answer = answer.join(",");
+                    }
+                    if (answer == null) {
+                        answer = "";
+                    }
+                    let record = {
+                        examredetailsUuidNumber: _this.paperUUID || layui.http.getParam("paperUUID"),
+                        examquestionId: question.id,
+                        examquestionName: question.examquestionName,
+                        examredetailsMyanswer: answer,
+                        yonghuId: _this.isAnonymous ? 0 : _this.user.id
+                    };
+                    var saveUrl = _this.isAnonymous
+                        ? `examredetails/savePublicExamredetails?examrecordId=` + (_this.examrecordId || "")
+                        : `examredetails/saveExamredetails?examrecordId=` + layui.http.getParam("examrecordId");
+                    layui.http.requestJson(saveUrl, 'post', record, function () {
+                    });
+                });
+            }
+        }
+    });
+
+    layui.use(['layer', 'element', 'http', 'jquery'], function () {
+        app.init();
+    });
+</script>
+</body>
+</html>
+

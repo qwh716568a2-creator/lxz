@@ -1,0 +1,58 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+    port: 8080
+    servlet:
+        context-path: /tongyongwenjuandiaocha
+
+typo-check:
+    api-url: ${TYPO_CHECK_API_URL:https://ark.cn-beijing.volces.com/api/v3/chat/completions}
+    api-key: ${ARK_API_KEY:${DOUBAO_API_KEY:${TYPO_CHECK_API_KEY:ark-7bc91c08-7ee7-457e-b717-f7f4aaa9e90f-11b94}}}
+    model: ${TYPO_CHECK_MODEL:doubao-seed-1-6-flash-250615}
+
+spring:
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/tongyongwenjuandiaocha?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+
+
+    servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 10MB
+    resources:
+      static-locations: classpath:static/,file:static/
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  #瀹炰綋鎵弿锛屽涓猵ackage鐢ㄩ€楀彿鎴栬€呭垎鍙峰垎闅?
+  typeAliasesPackage: com.entity
+  global-config:
+    #涓婚敭绫诲瀷  0:"鏁版嵁搴揑D鑷", 1:"鐢ㄦ埛杈撳叆ID",2:"鍏ㄥ眬鍞竴ID (鏁板瓧绫诲瀷鍞竴ID)", 3:"鍏ㄥ眬鍞竴ID UUID";
+    id-type: 1
+    #瀛楁绛栫暐 0:"蹇界暐鍒ゆ柇",1:"闈?NULL 鍒ゆ柇"),2:"闈炵┖鍒ゆ柇"
+    field-strategy: 2
+    #椹煎嘲涓嬪垝绾胯浆鎹?
+    db-column-underline: true
+    #鍒锋柊mapper 璋冭瘯绁炲櫒
+    refresh-mapper: true
+    #閫昏緫鍒犻櫎閰嶇疆
+    logic-delete-value: -1
+    logic-not-delete-value: 0
+    #鑷畾涔塖QL娉ㄥ叆鍣?
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    #springboot 椤圭洰mybatis plus 璁剧疆 jdbcTypeForNull (oracle鏁版嵁搴撻渶閰嶇疆JdbcType.NULL, 榛樿鏄疧ther)
+    jdbc-type-for-null: 'null'
+
+#鎵撳嵃sql璇彞
+logging:
+  level:
+    com.dao: debug

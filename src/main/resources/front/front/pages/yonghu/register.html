@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>娉ㄥ唽</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../xznstatic/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../../xznstatic/css/login.css"/>
+
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <style type="text/css">
+        .register {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-image: url(/tongyongwenjuandiaocha/img/front-img-bg.jpg);
+        }
+        .register form {
+            box-sizing: border-box;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center !important;
+        }
+        .register .logo, .register .title {
+            box-sizing: border-box;
+        }
+        .register .logo img {
+            display: block;
+        }
+        .register .title {
+            text-align: center;
+        }
+        .register .form-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .register .form-item input, .register .form-label {
+            box-sizing: border-box;
+        }
+        .register .btn-submit {
+            display: block;
+            box-sizing: border-box;
+        }
+        .register form p.txt {
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .layui-unselect{
+            margin-left: -5px;
+            margin-top: 3px;
+            border: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="register" id="app">
+    <form class="layui-form login-form" lay-filter="myForm" :style='{"padding":"20px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","borderRadius":"20px","borderWidth":"0","width":"400px","borderStyle":"solid","justifyContent":"center","height":"auto"}'>
+        <p class="title" v-if="true" :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"10px auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"rgba(247, 247, 247, 0)","color":"red","isshow":true,"borderRadius":"8px","borderWidth":"0","width":"110px","lineHeight":"32px","fontSize":"17px","borderStyle":"solid"}'>鐢ㄦ埛娉ㄥ唽</p>
+                 <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                     <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">璐︽埛锛?/label>
+                     <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="required" type="text" id="username" name="username" placeholder="璇疯緭鍏ヨ处鎴? autocomplete="off" class="layui-input">
+                 </div>
+                <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                    <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">瀵嗙爜锛?/label>
+                    <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="password1|required" type="password" id="password" name="password" placeholder="璇疯緭鍏ュ瘑鐮? autocomplete="off" class="layui-input">
+                </div>
+                 <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                     <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">瀵嗙爜锛?/label>
+                     <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="password2|required" type="password" id="password2" name="password2" placeholder="璇烽噸澶嶈緭鍏ュ瘑鐮? autocomplete="off" class="layui-input">
+                 </div>
+                                 <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                     <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">鐢ㄦ埛濮撳悕锛?/label>
+                     <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="required" type="text" id="yonghuName" name="yonghuName" placeholder="璇疯緭鍏ョ敤鎴峰鍚? autocomplete="off" class="layui-input">
+                 </div>
+                <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}'>
+                    <div :style='{"margin-top":"10px","padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"auto","fontSize":"14px","borderStyle":"solid","height":"44px"}'>
+                        <select name="sexTypes" id="sexTypes">
+                            <option value="">璇烽€夋嫨鎬у埆</option>
+                            <option v-for="(item,index) in sexTypesList" :value="item.codeIndex" :key="item.codeIndex">{{ item.indexName }}</option>
+                        </select>
+                    </div>
+                </div>
+<!-- 韬唤璇佸彿 -->
+                <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                    <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">韬唤璇佸彿锛?/label>
+                    <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="identity|required" type="text" id="yonghuIdNumber" name="yonghuIdNumber" placeholder="璇疯緭鍏ヨ韩浠借瘉鍙? autocomplete="off" class="layui-input">
+                </div>
+                <!-- 鎵嬫満鍙?-->
+                <div :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 auto","borderColor":"rgba(0,0,0,1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"80%","borderStyle":"solid","height":"64px"}' class="form-item layui-form-text">
+                    <label v-if="false" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","borderColor":"rgba(0,0,0,0)","backgroundColor":"transparent","color":"#333","borderRadius":"0","textAlign":"right","borderWidth":"0","width":"110px","fontSize":"16px","borderStyle":"solid"}' class="form-label">鎵嬫満鍙凤細</label>
+                    <input :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(160, 67, 26, 1)","borderColor":"rgba(135, 206, 250, 1)","backgroundColor":"#fff","color":"rgba(59, 46, 126, 1)","borderRadius":"8px","textAlign":"left","borderWidth":"1px","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-verify="phone|required" type="text" id="yonghuPhone" name="yonghuPhone" placeholder="璇疯緭鍏ユ墜鏈哄彿" autocomplete="off" class="layui-input">
+                </div>
+                        <button class="layui-btn layui-btn-fluid layui-btn-danger btn-submit main_backgroundColor" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,.5)","margin":"10px auto","borderColor":"#ccc","color":"rgba(255, 255, 255, 1)","borderRadius":"8px","borderWidth":"0","width":"60%","fontSize":"14px","borderStyle":"solid","height":"44px"}' lay-submit lay-filter="register" style="width: 280px;">娉ㄥ唽</button>
+        <p :style='{"color":"rgba(59, 46, 126, 1)","textAlign":"left","fontSize":"12px"}' class="txt"><a href="javascript:window.location.href='../login/login.html'">宸叉湁璐﹀彿鐧诲綍</a></p>
+    </form>
+</div>
+
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.js"></script>
+<!-- 寮曞叆element缁勪欢搴?-->
+<script src="../../xznstatic/js/element.min.js"></script>
+<!-- 寮曞叆element鏍峰紡 -->
+<link rel="stylesheet" href="../../xznstatic/css/element.min.css">
+<!-- 缁勪欢閰嶇疆淇℃伅 -->
+<script src="../../js/config.js"></script>
+<!-- 鎵╁睍鎻掍欢閰嶇疆淇℃伅 -->
+<script src="../../modules/config.js"></script>
+<!-- 宸ュ叿鏂规硶 -->
+<script src="../../js/utils.js"></script>
+<!-- 鏍￠獙鏍煎紡宸ュ叿绫?-->
+<script src="../../js/validate.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            sexTypesList : [],
+        },
+        updated: function() {
+            layui.form.render(null, 'myForm');
+        },
+    });
+
+    layui.use(['layer', 'element', 'form', 'http', 'jquery'], function() {
+        var layer = layui.layer;
+        var element = layui.element;
+        var form = layui.form;
+        var http = layui.http;
+        var jquery = layui.jquery;
+        var tablename = http.getParam('tablename');
+        //瀛楀吀琛ㄦ暟鎹鍣?        // 鎬у埆鐨勬煡璇㈠拰鍒濆鍖?        sexTypesSelect();
+        // 鏃ユ湡鏁堥獙瑙勫垯鍙婃牸寮?        dateTimePick();
+        // 琛ㄥ崟鏁堥獙瑙勫垯
+        form.verify({
+            // 姝ｆ暣鏁版晥楠岃鍒?            integer: [
+                /^[1-9][0-9]*$/
+                ,'蹇呴』鏄鏁存暟'
+            ]
+            // 灏忔暟鏁堥獙瑙勫垯
+            ,double: [
+                /^[1-9][0-9]{0,5}(\.[0-9]{1,2})?$/
+                ,'鏈€澶ф暣鏁颁綅涓?涓?灏忔暟鏈€澶т袱浣?
+            ]
+            ,password1: function(value, item){ //value锛氳〃鍗曠殑鍊笺€乮tem锛氳〃鍗曠殑DOM瀵硅薄
+            var password2 = jquery("#password2").val();
+                if(password2 != null && password2 != "" && password2 != "null"){
+                    if(value != password2){
+                        return '瀵嗙爜鐨勪袱娆″瘑鐮佷笉涓€鑷?;
+                    }
+                }
+            }
+            ,password2: function(value, item){ //value锛氳〃鍗曠殑鍊笺€乮tem锛氳〃鍗曠殑DOM瀵硅薄
+            var password1 = jquery("#password1").val();
+                if(password1 != null && password1 != "" && password1 != "null"){
+                    if(value != password1){
+                        return '瀵嗙爜鐨勪袱娆″瘑鐮佷笉涓€鑷?;
+                    }
+                }
+            }
+        });
+
+        // 娉ㄥ唽
+        form.on('submit(register)', function(data) {
+            data = data.field;
+            http.requestJson(tablename + '/register', 'post', data, function(res) {
+                layer.msg('娉ㄥ唽鎴愬姛', {
+                    time: 2000,
+                    icon: 6
+                },function(){
+                    // 璺緞璁块棶璁剧疆
+                    window.location.href = '../login/login.html';
+                });
+            });
+            return false
+        });
+
+
+        // 鏃ユ湡妗嗗垵濮嬪寲
+        function dateTimePick(){
+        };
+
+      // 鎬у埆鐨勬煡璇?      function sexTypesSelect() {
+          //濉厖涓嬫媺妗嗛€夐」
+          http.request("dictionary/page?page=1&limit=100&sort=&order=&dicCode=sex_types", "GET", {}, (res) => {
+              if(res.code == 0){
+                vue.sexTypesList = res.data.list;
+              }
+          });
+      }
+
+    });
+</script>
+</body>
+</html>

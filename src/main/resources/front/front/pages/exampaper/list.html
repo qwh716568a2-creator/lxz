@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>问卷列表</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <style>
+        .index-title {
+            text-align: center;
+            box-sizing: border-box;
+            width: 980px;
+            max-width: calc(100% - 40px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .paper-container {
+            width: 980px;
+            max-width: calc(100% - 40px);
+            margin: 40px auto 0;
+        }
+
+        .paper-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-width: 280px;
+        }
+
+        .paper-actions .layui-btn {
+            margin: 0;
+        }
+
+        .layui-laypage .layui-laypage-count {
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="index-title sub_backgroundColor" :style='{"padding":"10px","boxShadow":"0 0 2px rgba(160, 67, 26, 1)","margin":"10px auto","borderColor":"rgba(0,0,0,.3)","color":"rgba(255, 255, 255, 1)","borderRadius":"4px","borderWidth":"0","fontSize":"20px","borderStyle":"solid","height":"auto"}'>
+        <span>EXAM / PAPER</span><span>问卷列表</span>
+    </div>
+
+    <div class="paper-container">
+        <table class="layui-table" lay-skin="nob">
+            <thead>
+            <tr>
+                <th>问卷名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item,index) in dataList" v-bind:key="index">
+                <td>{{item.exampaperName}}</td>
+                <td>
+                    <div class="paper-actions">
+                        <button @click="exam(item.id)" type="button" class="layui-btn layui-btn-radius btn-theme">
+                            <i class="layui-icon">&#xe679;</i> 问卷调查
+                        </button>
+                        <button @click="copyPublicLink(item.id)" type="button" class="layui-btn layui-btn-radius layui-btn-normal">
+                            <i class="layui-icon">&#xe64c;</i> 复制匿名链接
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pager" id="pager" style="text-align:center"></div>
+    </div>
+</div>
+
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/config.js?v=rename-20260523"></script>
+<script src="../../modules/config.js"></script>
+<script src="../../js/utils.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            dataList: []
+        },
+        methods: {
+            exam: function (id) {
+                window.parent.location.href = './exam.html?id=' + id + '&anonymous=1';
+            },
+            copyPublicLink: function (id) {
+                var link = window.location.origin + '/tongyongwenjuandiaocha/front/pages/exampaper/exam.html?id=' + id + '&anonymous=1';
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(link).then(function () {
+                        layui.layer.msg('匿名填写链接已复制');
+                    });
+                } else {
+                    var input = document.createElement('input');
+                    input.value = link;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    layui.layer.msg('匿名填写链接已复制');
+                }
+            }
+        }
+    });
+
+    layui.use(['layer', 'element', 'laypage', 'http'], function() {
+        var laypage = layui.laypage;
+        var http = layui.http;
+        var limit = 5;
+
+        function loadPage(page, pageLimit, renderPager) {
+            http.request('exampaper/list', 'get', {
+                page: page,
+                limit: pageLimit,
+                status: 1
+            }, function(res) {
+                vue.dataList = res.data.list || [];
+                if (renderPager) {
+                    laypage.render({
+                        elem: 'pager',
+                        count: res.data.total,
+                        limit: pageLimit,
+                        groups: 5,
+                        layout: ['prev', 'page', 'next'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                loadPage(obj.curr, obj.limit, false);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        loadPage(1, limit, true);
+    });
+</script>
+</body>
+</html>
